@@ -5,6 +5,7 @@ import com.example.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Component
@@ -15,6 +16,7 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public void save(Product product) {
+        product.setCreatedate(new Date());
         productRepository.save(product);
     }
 
@@ -42,6 +44,7 @@ public class ProductServiceImpl implements ProductService{
               updateProduct.setPrice(product.getPrice());
               updateProduct.setCreatedate(product.getCreatedate());
               updateProduct.setStatus(product.isStatus());
+              updateProduct.setCreatedate(new Date());
         }
     }
 

@@ -3,11 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body>
 
+<!-- ======================= 新增 ======================= -->
+<h1>新增商品</h1>
+<form id="insertForm">
+    <label for="insertName">名稱：</label>
+    <input type="text" id="insertName" required><br>
+
+    <label for="insertPrice">價格：</label>
+    <input type="text" id="insertPrice" required><br>
+
+    <label for="insertStatus">上下架：</label>
+    <select id="insertStatus" required>
+        <option value="true">上架</option>
+        <option value="false">下架</option>
+    </select><br>
+
+    <button type="submit" id="insertProduct">新增</button>
+</form>
+
+<!-- ======================= 刪除 ======================= -->
+<h2>刪除商品</h2>
+<form id="deleteForm">
+    <label for="deleteId">ID:</label>
+    <input type="text" id="deleteId" required><br>
+    <button type="button" id="deleteProduct">刪除</button>
+</form>
+
+<!-- ======================= 查詢單一 ======================= -->
+<h2>查詢單一商品</h2>
+<form id="getForm">
+    <label for="getById">ID:</label>
+    <input type="text" id="getById" required>
+    <button type="button" id="getByIdStudent">搜尋</button>
+</form>
+
+<div id="productDetails">
+    <!-- 學生資料顯示在這裡 -->
+</div>
+
+<!-- ======================= 查詢所有 ======================= -->
+<h2>所有商品</h2>
+<button type="button" id="getProducts">搜尋</button>
+<div Id="productsDetails">
+    <!--  所有商品資料  -->
+</div>
 
 
-<script></script>
+<!-- ======================= 修改 ======================= -->
+<h2>更新商品</h2>
+<form id="updateForm">
+    <label for="updateId">Id:</label>
+    <input type="text" id="updateId"  required><br>
+
+    <label for="updateName">名稱:</label>
+    <input type="text" id="updateName" required><br>
+
+    <label for="updatePrice">價格:</label>
+    <input type="text" id="updatePrice" required><br>
+
+    <label for="updateStatus">上下架狀態:</label>
+    <select id="updateStatus" required>
+        <option value="true">上架</option>
+        <option value="false">下架</option>
+    </select><br>
+
+    <button type="button" id="updateProduct">更新</button>
+</form>
+
+<script>
+    $("#insertProduct").click(function () {
+        var productData = {
+            "name": $("#insertName").val(),
+            "price": $("#insertPrice").val(),
+            "status": $("#insertStatus").val(),
+        };
+
+        console.log(productData);
+
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8080/products",
+            data: JSON.stringify(productData),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                alert("新增成功");
+                console.log(response);
+            },
+            error: function () {
+                alert("新增失败");
+            }
+        });
+    });
+
+</script>
 </body>
 </html>
