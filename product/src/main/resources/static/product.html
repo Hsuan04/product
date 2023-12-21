@@ -38,14 +38,14 @@
 <form id="getForm">
     <label for="getById">ID:</label>
     <input type="text" id="getById" required>
-    <button type="button" id="getByIdStudent">搜尋</button>
+    <button type="button" id="getProduct">搜尋</button>
 </form>
 
 <div id="productDetails">
-    <!-- 學生資料顯示在這裡 -->
+    <!-- 商品資料顯示在這裡 -->
 </div>
 
-<!-- ======================= 查詢所有 ======================= -->
+<!-- ======================= 查詢所有商品 ======================= -->
 <h2>所有商品</h2>
 <button type="button" id="getProducts">搜尋</button>
 <div Id="productsDetails">
@@ -75,6 +75,7 @@
 </form>
 
 <script>
+     // ======================= 新增 =======================
     $("#insertProduct").click(function () {
         var productData = {
             "name": $("#insertName").val(),
@@ -100,6 +101,114 @@
         });
     });
 
+     // ======================= 刪除 =======================
+     $("#deleteProduct").click(function () {
+         $.ajax({
+             type: "DELETE",
+             url: "http://localhost:8080/products/" + $("#deleteId").val(),
+             contentType: "application/json; charset=utf-8",
+             success: function (response) {
+                 console.log($("#deleteId"));
+             },
+             error: function () {
+                 console.error("發送失敗");
+             }
+         });
+     });
+
+
+     // =================== 查詢單一商品 ===================
+     $("#getProduct").click(function () {
+         $.ajax({
+             type: "GET",
+             url: "http://localhost:8080/products/" + $("#getById").val(),
+             contentType: "application/json; charset=utf-8",
+             success: function (product) {
+                 productDetails(product);
+             },
+             error: function () {
+                 productDetails(null);
+             }
+         });
+     });
+
+     function productDetails(product) {
+         var detailsHtml = "<table>";
+
+         if (product) {
+             detailsHtml += "<tr><th>ID</th><td>" + product.id + "</td></tr>";
+             detailsHtml += "<tr><th>Name</th><td>" + product.name + "</td></tr>";
+             detailsHtml += "<tr><th>Price</th><td>" + product.price + "</td></tr>";
+             detailsHtml += "<tr><th>Status</th><td>" + (product.status ? "上架" : "下架") + "</td></tr>";
+             detailsHtml += "<tr><th>Create Date</th><td>" + product.createdate + "</td></tr>";
+         } else {
+             detailsHtml += "<tr><td colspan='2'>product not found</td></tr>";
+         }
+
+         detailsHtml += "</table>";
+         $("#productDetails").html(detailsHtml);
+     }
+
+     // =================== 查詢所有資料 ===================
+     $("#getProducts").click(function () {
+         $.ajax({
+             type: "GET",
+             url: "http://localhost:8080/products",
+             contentType: "application/json; charset=utf-8",
+             success: function (products) {
+                 AllProducts(products);
+             },
+             error: function () {
+                 AllProducts(null);
+             }
+         });
+     });
+
+     // 查詢所有資料
+     function AllProducts(products) {
+         var detailsHtml = "<table>";
+
+         if (products) {
+             detailsHtml += "<tr><th>ID</th><th>Name</th><th>Price</th><th>Status</th><th>Create Date</th></tr>";
+             $.each(products, function (index, product) {
+                 detailsHtml += "<tr><td>" + product.id + "</td>";
+                 detailsHtml += "<td>" + product.name + "</td>";
+                 detailsHtml += "<td>" + product.price + "</td>";
+                 detailsHtml += "<td>" + (product.status ? "上架" : "下架") + "</td>";
+                 detailsHtml += "<td>" + product.createdate + "</td></tr>";
+             });
+         } else {
+             detailsHtml += "<tr><td colspan='5'>Products not found</td></tr>";
+         }
+
+         detailsHtml += "</table>";
+         $("#productsDetails").html(detailsHtml);
+     }
+
+     // =================== 更新資料 ===================
+     $("#updateProduct").click(function () {
+
+         var productData = {
+             name: $("#updateName").val(),
+             price: $("#updatePrice").val(),
+             status: $("#updateStatus").val(),
+         };
+         console.log(productData);
+         $.ajax({
+             type: "PUT",
+             url: "http://localhost:8080/products/" + $("#updateId").val(),
+             data: JSON.stringify(productData),
+             contentType: "application/json; charset=utf-8",
+             dataType: "json",
+             success: function (response) {
+                 console.log($("#updateId").val());
+                 console.log(response);
+             },
+             error: function () {
+                 console.error("發送失敗");
+             }
+         });
+     });
 </script>
 </body>
 </html>

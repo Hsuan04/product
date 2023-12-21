@@ -36,16 +36,20 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void update(Integer id, Product product) {
+    public Product update(Integer id, Product product) {
         Optional<Product> optionalProduct = productRepository.findById(id);
-           if(optionalProduct.isPresent()){
-              Product updateProduct = optionalProduct.get();
-              updateProduct.setName(product.getName());
-              updateProduct.setPrice(product.getPrice());
-              updateProduct.setCreatedate(product.getCreatedate());
-              updateProduct.setStatus(product.isStatus());
-              updateProduct.setCreatedate(new Date());
+        if (optionalProduct.isPresent()) {
+            Product existingProduct = optionalProduct.get();
+            existingProduct.setName(product.getName());
+            existingProduct.setPrice(product.getPrice());
+            existingProduct.setStatus(product.isStatus());
+            existingProduct.setCreatedate(new Date());
+
+            return productRepository.save(existingProduct);
+        } else {
+            return null;
         }
     }
+
 
 }

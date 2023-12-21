@@ -14,5 +14,5 @@ public interface ProductService {
 
     Iterable<Product> findAll();
 
-    void update(Integer id,Product product);
+    Product update(Integer id,Product product);
 }

@@ -23,7 +23,7 @@ public class Product {
     private Date createdate;
 
     @Column(name="status")
-    private boolean status;
+    private Boolean status;
 
     public Integer getId() {
         return id;
