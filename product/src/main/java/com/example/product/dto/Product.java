@@ -64,4 +64,11 @@ public class Product {
     public void setStatus(boolean status) {
         this.status = status;
     }
+
+    //sql -> java object
+    //char,varcher -> String
+    //int,integer -> int,Integer
+    //decimal -> BigDecimal
+    //bigint -> Long
+    //BOOLEAN, TINYINT -> boolean or Boolean
 }
